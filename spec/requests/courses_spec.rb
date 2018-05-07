@@ -9,7 +9,7 @@ RSpec.describe 'Course API', type: :request do
 
     it 'response all the courses' do
       expect(json).not_to be_empty
-      expect(json.size).to eq(20)
+      expect(json['total']).to eq(20)
     end
 
     it 'returns 200' do
