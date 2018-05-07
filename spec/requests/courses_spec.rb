@@ -16,4 +16,14 @@ RSpec.describe 'Course API', type: :request do
       expect(response).to have_http_status(200)
     end
   end
+
+  describe 'GET /courses with params' do
+    it 'response to `dept` params' do
+      get '/courses', params: { dept: 'CIS' }
+      expect(json['total']).to eq(20)
+
+      get '/courses', params: { dept: 'ACCT' }
+      expect(json['total']).to eq(0)
+    end
+  end
 end
