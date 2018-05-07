@@ -30,7 +30,7 @@ class DeAnzaScraper
         # there might be some case where nothing is found
         next if table_rows.empty?
 
-        courses.push extract_course_data(table_rows)
+        courses.push extract_course_data(table_rows, department)
       end
 
       courses
@@ -61,7 +61,7 @@ class DeAnzaScraper
       }
     end
 
-    def extract_course_data(table_rows)
+    def extract_course_data(table_rows, department)
       courses = Array.new
 
       current_row = 0
@@ -69,8 +69,9 @@ class DeAnzaScraper
         tds = table_rows[current_row].css('td')
 
         course = {
-          crn:      tds[0].text,
-          course:   tds[1].text,
+          crn:        tds[0].text,
+          course:     tds[1].text,
+          department: department,
           # section:  tds[2].text,
 
           'lectures_attributes' => [{
