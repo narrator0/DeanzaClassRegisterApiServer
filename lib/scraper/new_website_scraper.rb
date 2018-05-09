@@ -18,10 +18,18 @@ class DeAnzaScraper
     end
 
     def get_courses(dept_options, quarter)
+      progressbar = ProgressBar.create(
+        title: 'Grabbing data from deanza.edu',
+        total: dept_options.count,
+        format: '%t: |%B%p%|'
+      )
+
       courses = Array.new
 
       dept_options.each do |department|
-        puts "Scraping data from #{course_list_url(department, quarter)}..."
+        # increment progressbar
+        progressbar.increment
+
         html = get_parsed_html course_list_url(department, quarter)
 
         # get the table of courses
@@ -33,6 +41,10 @@ class DeAnzaScraper
         courses.push extract_course_data(table_rows, department)
       end
 
+      progressbar.finish
+
+      # we are pushing array of courses but we
+      # only need a 1-D array so flatten it
       courses.flatten
     end
 
