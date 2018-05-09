@@ -36,6 +36,7 @@ group :development, :test do
   gem 'rspec-rails', '~> 3.5'
   gem 'pry'
   gem 'awesome_print'
+  gem 'ruby-progressbar'
 end
 
 group :development do
