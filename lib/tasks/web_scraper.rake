@@ -15,6 +15,7 @@ namespace :scraper do
         progressbar.increment
 
         if course = Course.find_by(crn: c[:crn])
+          course.lectures.delete_all
           course.update(c)
         else
           Course.create(c)
