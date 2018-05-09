@@ -33,7 +33,7 @@ class DeAnzaScraper
         courses.push extract_course_data(table_rows, department)
       end
 
-      courses
+      courses.flatten
     end
 
     def get_parsed_html(url)
