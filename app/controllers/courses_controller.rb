@@ -1,7 +1,15 @@
 class CoursesController < ApplicationController
   def index
-    @courses = Course.includes(:lectures)
+    json = Rails.cache.fetch(request.original_url) do
+      courses = Course.includes(:lectures)
+                      .where_if_present(department: params[:dept])
 
-    @courses = @courses.where(department: params[:dept]) if params[:dept].present?
+      {
+        total: courses.length,
+        data: courses
+      }.to_json
+    end
+
+    render json: json
   end
 end
