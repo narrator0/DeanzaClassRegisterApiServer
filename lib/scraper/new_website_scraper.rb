@@ -49,7 +49,7 @@ class DeAnzaScraper
     end
 
     def get_parsed_html(url)
-      Nokogiri::HTML.parse(RestClient::get(url))
+      Nokogiri::HTML.parse(RestClient.get(url))
     end
 
     def course_list_url(department, quarter)
