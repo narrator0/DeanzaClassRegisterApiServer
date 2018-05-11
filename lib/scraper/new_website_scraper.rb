@@ -65,7 +65,7 @@ class DeAnzaScraper
       tds = row.css('td')
 
       {
-        title:      tds[0].children.text,
+        title:      tds[0].children.first.text,
         days:       tds[1].text,
         times:      tds[2].text,
         instructor: tds[3].children.text,
@@ -87,7 +87,7 @@ class DeAnzaScraper
           # section:  tds[2].text,
 
           'lectures_attributes' => [{
-            title:      tds[3].children.text,
+            title:      tds[3].children.first.text,
             days:       tds[4].text,
             times:      tds[5].text,
             instructor: tds[6].children.text,
