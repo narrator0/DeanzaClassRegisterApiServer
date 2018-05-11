@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_07_051811) do
+ActiveRecord::Schema.define(version: 2018_05_11_204531) do
 
   create_table "courses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "crn"
@@ -18,6 +18,12 @@ ActiveRecord::Schema.define(version: 2018_05_07_051811) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "department"
+    t.integer "status"
+    t.string "campus"
+    t.float "units"
+    t.integer "seats_availible"
+    t.integer "waitlist_slots_availible"
+    t.integer "waitlist_slots_capacity"
     t.index ["crn"], name: "index_courses_on_crn"
   end
 

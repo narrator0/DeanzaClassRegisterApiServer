@@ -1,4 +1,7 @@
 class Course < ApplicationRecord
+  # enums
+  enum status: [:Open, :Waitlist, :Full]
+
   # relations
   has_many :lectures, dependent: :destroy
   accepts_nested_attributes_for :lectures
