@@ -50,5 +50,5 @@ test:
 production:
   <<: *default
   database: deanza_class_register_production
-  username: deanza_class_register
+  username: deploy
   password: <%= ENV['deanza_class_register_DATABASE_PASSWORD'] %>
