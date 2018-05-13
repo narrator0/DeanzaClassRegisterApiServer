@@ -49,6 +49,7 @@ test:
 #
 production:
   <<: *default
+  socket: /var/run/mysqld/mysqld.sock
   database: deanza_class_register_production
   username: deploy
   password: <%= ENV['deanza_class_register_DATABASE_PASSWORD'] %>
