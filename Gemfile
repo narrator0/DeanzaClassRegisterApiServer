@@ -30,6 +30,7 @@ gem 'bootsnap', '>= 1.1.0', require: false
 
 # scraper
 gem 'rest-client'
+gem 'ruby-progressbar'
 
 # authentication
 gem 'devise'
@@ -40,7 +41,6 @@ group :development, :test do
   gem 'rspec-rails', '~> 3.5'
   gem 'pry'
   gem 'awesome_print'
-  gem 'ruby-progressbar'
 end
 
 group :development do
