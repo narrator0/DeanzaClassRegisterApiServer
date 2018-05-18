@@ -35,12 +35,12 @@ namespace :scraper do
 
     # get course data from www.deanza.edu
     update_course_with_scraper('Updating database') do
-      DeAnzaScraper::NewWebsiteScraper.new.scrape('S2018')
+      DeAnzaScraper::NewWebsiteScraper.new.scrape('M2018')
     end
 
     # get course data from myportal
     update_course_with_scraper('Updating database') do
-      DeAnzaScraper::MyportalScraper.new.scrape('201842')
+      DeAnzaScraper::MyportalScraper.new.scrape('201912')
     end
 
     puts 'Update course data successfully.'
