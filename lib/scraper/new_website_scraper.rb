@@ -38,7 +38,7 @@ class DeAnzaScraper
         # there might be some case where nothing is found
         next if table_rows.empty?
 
-        courses.push extract_course_data(table_rows, department)
+        courses.push extract_course_data(table_rows, quarter, department)
       end
 
       progressbar.finish
@@ -73,7 +73,7 @@ class DeAnzaScraper
       }
     end
 
-    def extract_course_data(table_rows, department)
+    def extract_course_data(table_rows, quarter, department)
       courses = Array.new
 
       current_row = 0
@@ -84,6 +84,7 @@ class DeAnzaScraper
           crn:        tds[0].text,
           course:     tds[1].text,
           department: department,
+          quarter: quarter,
           # section:  tds[2].text,
 
           'lectures_attributes' => [{
