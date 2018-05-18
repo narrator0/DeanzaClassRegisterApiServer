@@ -25,5 +25,13 @@ RSpec.describe 'Course API', type: :request do
       get '/courses', params: { dept: 'ACCT' }
       expect(json['total']).to eq(0)
     end
+
+    it 'response to `qaurter` params' do
+      get '/courses', params: { quarter: 'M2018' }
+      expect(json['total']).to eq(20)
+
+      get '/courses', params: { quarter: 'S2018' }
+      expect(json['total']).to eq(0)
+    end
   end
 end
