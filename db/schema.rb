@@ -46,6 +46,7 @@ ActiveRecord::Schema.define(version: 2018_05_24_214144) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["course_id"], name: "index_subscribtions_on_course_id"
+    t.index ["user_id", "course_id"], name: "index_subscribtions_on_user_id_and_course_id", unique: true
     t.index ["user_id"], name: "index_subscribtions_on_user_id"
   end
 

@@ -5,5 +5,7 @@ class CreateSubscribtions < ActiveRecord::Migration[5.2]
       t.belongs_to :course, index: true
       t.timestamps
     end
+
+    add_index :subscribtions, [:user_id, :course_id], unique: true
   end
 end
