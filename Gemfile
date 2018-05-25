@@ -36,6 +36,11 @@ gem 'ruby-progressbar'
 gem 'devise'
 gem 'jwt'
 
+# background jobs
+gem 'sidekiq'
+gem 'sidekiq-client-cli'
+gem 'whenever', require: false
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
@@ -56,6 +61,7 @@ group :development do
   gem 'capistrano-passenger', require: false
   gem 'capistrano-rvm',       require: false
   gem 'capistrano-bundler',   require: false
+  gem 'capistrano-sidekiq',   require: false
 end
 
 group :test do
