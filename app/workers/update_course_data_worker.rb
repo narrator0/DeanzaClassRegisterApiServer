@@ -5,32 +5,16 @@ class UpdateCourseDataWorker
     require_relative '../../lib/scraper/myportal_scraper'
     course_data = DeAnzaScraper::MyportalScraper.new.scrape('201912')
 
-    # setup progressbar
-    progressbar = ProgressBar.create(
-      title: 'update course data...',
-      total: course_data.count,
-      format: '%t: |%B%p%|'
-    )
-
     Course.transaction do
       course_data.each do |data|
-        progressbar.increment
-
         if course = Course.find_by(crn: data[:crn], quarter: 'M2018')
+          course.attributes = data
 
-          if data['lectures_attributes'].present?
-            data['lectures_attributes'].each do |lecture|
-              lecture[:id] = course.lectures.find_by(title: lecture[:title]).try(:id)
-            end
-          end
-
-          course.update(data)
+          course.save if course.changed?
         else
           Course.create(data)
         end
       end
     end
-
-    progressbar.finish
   end
 end
