@@ -10,7 +10,15 @@ class UpdateCourseDataWorker
         if course = Course.find_by(crn: data[:crn], quarter: 'M2018')
           course.attributes = data
 
-          course.save if course.changed?
+          if course.changed?
+            if course.changed.include?('status')
+              course.subscribers.each do |user|
+                UserMailer.notify_status_change(user, course.status_was, course).deliver_later!
+              end
+            end
+
+            course.save
+          end
         else
           Course.create(data)
         end

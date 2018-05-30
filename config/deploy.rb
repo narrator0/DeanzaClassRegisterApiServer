@@ -38,6 +38,8 @@ append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/syst
 # Uncomment the following to require manually verifying the host key before first deploy.
 # set :ssh_options, verify_host_key: :secure
 
+set :sidekiq_options_per_process, ['--queue mailers --queue default']
+
 namespace :deploy do
   desc "Update crontab with whenever"
   task :update_cron do

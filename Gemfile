@@ -62,6 +62,9 @@ group :development do
   gem 'capistrano-rvm',       require: false
   gem 'capistrano-bundler',   require: false
   gem 'capistrano-sidekiq',   require: false
+
+  # email
+  gem "letter_opener"
 end
 
 group :test do
