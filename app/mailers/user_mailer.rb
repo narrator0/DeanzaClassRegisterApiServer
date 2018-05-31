@@ -5,6 +5,6 @@ class UserMailer < ApplicationMailer
     @current_status = current_status
     @course = course
 
-    mail(to: @user.email, subject: "Status of #{@course.course} has become \"#{@course.status}\"")
+    mail(to: @user.email, subject: "Status of #{@course.course} has become \"#{@current_status}\"")
   end
 end
