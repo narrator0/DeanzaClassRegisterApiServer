@@ -27,10 +27,10 @@ RSpec.describe 'Course API', type: :request do
     end
 
     it 'response to `qaurter` params' do
-      get '/courses', params: { quarter: 'M2018' }
+      get '/courses', params: { quarter: Rails.application.credentials.quarter }
       expect(json['total']).to eq(20)
 
-      get '/courses', params: { quarter: 'S2018' }
+      get '/courses', params: { quarter: 'S2011' }
       expect(json['total']).to eq(0)
     end
   end
