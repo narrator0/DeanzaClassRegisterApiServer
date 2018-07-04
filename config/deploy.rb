@@ -45,6 +45,7 @@ namespace :deploy do
   task :update_cron do
     on roles(:app) do
       within current_path do
+        execute :bundle, :exec, :rake, scrapper: :create_course
         execute :bundle, :exec, "whenever --update-crontab #{fetch(:application)}"
       end
     end
