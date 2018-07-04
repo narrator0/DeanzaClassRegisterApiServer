@@ -1,7 +1,7 @@
 class CoursesController < ApplicationController
   def index
     json = Rails.cache.fetch(request.original_url) do
-      quarter = params[:quarter] || "M2018"
+      quarter = params[:quarter] || Rails.application.credentials.quarter
 
       courses = Course.includes(:lectures)
                       .where_if_present(department: params[:dept])

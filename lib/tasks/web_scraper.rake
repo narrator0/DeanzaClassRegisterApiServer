@@ -20,7 +20,7 @@ namespace :scraper do
         course_data.each do |data|
           progressbar.increment
 
-          if course = Course.find_by(crn: data[:crn], quarter: 'M2018')
+          if course = Course.find_by(crn: data[:crn], quarter: Rails.application.credentials.quarter)
 
             if data['lectures_attributes'].present?
               data['lectures_attributes'].each do |lecture|
@@ -41,12 +41,12 @@ namespace :scraper do
 
     # get course data from www.deanza.edu
     update_course_with_scraper('Updating database') do
-      DeAnzaScraper::NewWebsiteScraper.new.scrape('M2018')
+      DeAnzaScraper::NewWebsiteScraper.new.scrape(Rails.application.credentials.quarter)
     end
 
     # get course data from myportal
     update_course_with_scraper('Updating database') do
-      DeAnzaScraper::MyportalScraper.new.scrape('201912')
+      DeAnzaScraper::MyportalScraper.new.scrape(Rails.application.credentials.termcode)
     end
 
     puts 'Update course data successfully.'

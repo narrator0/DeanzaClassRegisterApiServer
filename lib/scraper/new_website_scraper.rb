@@ -88,11 +88,11 @@ class DeAnzaScraper
           # section:  tds[2].text,
 
           'lectures_attributes' => [{
-            title:      tds[3].children.first.text,
-            days:       tds[4].text,
-            times:      tds[5].text,
-            instructor: tds[6].children.text,
-            location:   tds[7].text
+            title:      tds[4].children.first.text,
+            days:       tds[5].text,
+            times:      tds[6].text,
+            instructor: tds[7].children.text,
+            location:   tds[8].text
           }]
         }
 

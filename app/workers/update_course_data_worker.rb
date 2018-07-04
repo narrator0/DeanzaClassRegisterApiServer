@@ -3,11 +3,11 @@ class UpdateCourseDataWorker
 
   def perform(*args)
     require_relative '../../lib/scraper/myportal_scraper'
-    course_data = DeAnzaScraper::MyportalScraper.new.scrape('201912')
+    course_data = DeAnzaScraper::MyportalScraper.new.scrape(Rails.application.credentials.termcode)
 
     Course.transaction do
       course_data.each do |data|
-        if course = Course.find_by(crn: data[:crn], quarter: 'M2018')
+        if course = Course.find_by(crn: data[:crn], quarter: Rails.application.credentials.quarter)
           course.attributes = data
 
           if course.changed.include?('status')
