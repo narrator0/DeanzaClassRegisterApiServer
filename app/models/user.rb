@@ -15,7 +15,7 @@ class User < ApplicationRecord
   # subscribe the course when it is not subscribed
   # otherwise unsubscribe the course
   def subscribe(crn)
-    course = Course.find_by(crn: crn)
+    course = Course.find_by(crn: crn, quarter: Rails.application.credentials.quarter)
 
     raise ActiveRecord::RecordNotFound, 'Crn not found!' unless course.present?
 
