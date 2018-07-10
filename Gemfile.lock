@@ -155,6 +155,7 @@ GEM
     public_suffix (3.0.2)
     puma (3.11.4)
     rack (2.0.5)
+    rack-cors (1.0.2)
     rack-protection (2.0.3)
       rack
     rack-test (1.0.0)
@@ -278,6 +279,7 @@ DEPENDENCIES
   mysql2 (>= 0.4.4, < 0.6.0)
   pry
   puma (~> 3.11)
+  rack-cors
   rails (~> 5.2.0)
   rest-client
   rollbar
