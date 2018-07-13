@@ -6,8 +6,11 @@ class UpdateCourseDataWorker
       require_relative '../../lib/scraper/myportal_scraper'
       termcode = Rails.application.credentials.termcode
       quarter  = Rails.application.credentials.quarter
+
+      Rollbar.info("Start MyportalScraper")
       course_data = DeAnzaScraper::MyportalScraper.new.scrape(termcode)
 
+      Rollbar.info("Start updating database")
       Course.transaction do
         course_data.each do |data|
           if course = Course.find_by(crn: data[:crn], quarter: quarter)
