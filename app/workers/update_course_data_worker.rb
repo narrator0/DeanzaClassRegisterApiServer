@@ -26,7 +26,9 @@ class UpdateCourseDataWorker
         end
       end
     end
-  rescue
+  rescue Exception => e
     # prvent any exception. do not retry
+    # still need to send error to rollbar
+    Rollbar.error(e)
   end
 end
