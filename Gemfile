@@ -42,7 +42,7 @@ gem 'sidekiq-client-cli'
 gem 'whenever', require: false
 
 # error report
-gem 'rollbar'
+gem 'rollbar', '2.16.3'
 
 # enable cors
 gem 'rack-cors', require: 'rack/cors'
