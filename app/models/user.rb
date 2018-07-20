@@ -25,4 +25,10 @@ class User < ApplicationRecord
       subscribed_courses.destroy course
     end
   end
+
+  def subscribed_courses_crns
+    subscribed_courses
+      .where(quarter: Rails.application.credentials.quarter)
+      .pluck(:crn)
+  end
 end

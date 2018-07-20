@@ -20,6 +20,10 @@ class UsersController < ApplicationController
     end
   end
 
+  def subscriptions
+    render json: @current_user.subscribed_courses_crns
+  end
+
   private
 
   def user_params
