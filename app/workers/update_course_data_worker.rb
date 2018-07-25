@@ -8,11 +8,9 @@ class UpdateCourseDataWorker
       quarter  = Rails.application.credentials.quarter
       course_data = DeAnzaScraper::MyportalScraper.new.scrape(termcode)
 
-      database_courses = Course.where(quarter: quarter)
-
       Course.transaction do
         course_data.each do |data|
-          if course = database_courses.find { |course| course.crn == data['crn'] }
+          if course = Course.find_by(crn: data['crn'], quarter: quarter)
             course.attributes = data
 
             if course.changed.include?('status')
