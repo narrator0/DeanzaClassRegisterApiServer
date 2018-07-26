@@ -10,7 +10,7 @@ class UpdateCourseDataWorker
 
       Course.transaction do
         course_data.each do |data|
-          if course = Course.find_by(crn: data['crn'], quarter: quarter)
+          if course = Course.find_by(crn: data[:crn], quarter: quarter)
             course.attributes = data
 
             if course.changed.include?('status')
