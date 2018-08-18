@@ -20,8 +20,8 @@ class DeAnzaScraper
           status: tds[4].text,
           campus: tds[10].text,
           units: tds[11].text.to_f,
-          seats_availible: tds[13].text.to_i,
-          waitlist_slots_availible: tds[14].text.to_i,
+          seats_available: tds[13].text.to_i,
+          waitlist_slots_available: tds[14].text.to_i,
           waitlist_slots_capacity: tds[15].text.to_i
         })
       end
