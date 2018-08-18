@@ -6,6 +6,7 @@ class CoursesController < ApplicationController
       courses = Course.includes(:lectures)
                       .where_if_present(department: params[:dept])
                       .where(quarter: quarter)
+                      .order(order)
 
       {
         total: courses.length,
@@ -14,5 +15,20 @@ class CoursesController < ApplicationController
     end
 
     render json: json
+  end
+
+  private
+
+  # manually filter using case
+  # to avoid sql injection
+  def order
+    case params[:sortBy]
+    when 'crn'
+      'crn'
+    when 'course'
+      'course'
+    else
+      'id'
+    end
   end
 end
