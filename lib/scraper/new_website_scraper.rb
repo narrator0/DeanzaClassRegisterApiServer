@@ -33,7 +33,7 @@ class DeAnzaScraper
         html = get_parsed_html course_list_url(department, quarter)
 
         # get the table of courses
-        table_rows = html.css('.table-schedule tbody tr')
+        table_rows = html.css(".table-schedule tbody tr.d-#{department}")
 
         # there might be some case where nothing is found
         next if table_rows.empty?
