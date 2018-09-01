@@ -3,6 +3,6 @@ class SubscribtionsController < ApplicationController
 
   def subscribe
     @current_user.subscribe params[:crn]
-    render json: @current_user.subscribed_course_ids, status: 200
+    render json: @current_user.subscribed_courses_crns, status: 200
   end
 end
