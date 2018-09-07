@@ -30,7 +30,7 @@ class DeAnzaScraper
     end
 
     def myportal_course_url
-      'https://banssb.fhda.edu/PROD/fhda_opencourses.P_GetCourseList'
+      'https://ssb-prod.ec.fhda.edu/PROD/fhda_opencourses.P_GetCourseList'
     end
 
     def payload(termcode)
