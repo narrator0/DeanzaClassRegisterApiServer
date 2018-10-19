@@ -19,7 +19,7 @@ class DeAnzaScraper
 
     def get_courses(dept_options, quarter)
       progressbar = ProgressBar.create(
-        title: 'Grabbing data from deanza.edu',
+        title: 'Grabbing courses from deanza.edu',
         total: dept_options.count,
         format: '%t: |%B%p%|'
       )
@@ -38,14 +38,37 @@ class DeAnzaScraper
         # there might be some case where nothing is found
         next if table_rows.empty?
 
-        courses.push extract_course_data(table_rows, quarter, department)
+        courses.concat extract_course_data(table_rows, quarter, department)
       end
 
       progressbar.finish
 
-      # we are pushing array of courses but we
-      # only need a 1-D array so flatten it
-      courses.flatten
+      progressbar = ProgressBar.create(
+        title: 'Getting detail data of every course',
+        total: courses.count,
+        format: '%t: |%B%p%|'
+      )
+
+      courses.each do |course|
+        # increment progressbar
+        progressbar.increment
+
+        html = get_parsed_html course_detail_url(course[:crn], quarter)
+
+        note = ''
+        advisory = ''
+        dt_tags = html.css('h3 + dl dt').each do |dt|
+          course[:prerequisites_note] = dt.next_element.try(:text) if dt.text == 'Note'
+          course[:prerequisites_advisory] = dt.next_element.try(:text) if dt.text == 'Advisory'
+        end
+
+        course[:description] = html.css('h3 + p').first.text
+        course[:class_material] = html.css('.table-schedule + p a').first.attr('href')
+      end
+
+      progressbar.finish
+
+      courses
     end
 
     def get_parsed_html(url)
@@ -54,6 +77,10 @@ class DeAnzaScraper
 
     def course_list_url(department, quarter)
       "https://www.deanza.edu/schedule/listings.html?dept=#{department}&t=#{quarter}"
+    end
+
+    def course_detail_url(crn, quarter)
+      "https://deanza.edu/schedule/class-details.html?crn=#{crn}&y=#{quarter[1..4]}&q=#{quarter[0]}"
     end
 
     def numberOfExtraLectures(row)
@@ -85,6 +112,10 @@ class DeAnzaScraper
           course:     tds[1].text,
           department: department,
           quarter: quarter,
+          description: '',
+          class_material: '',
+          prerequisites_note: '',
+          prerequisites_advisory: '',
           # section:  tds[2].text,
 
           'lectures_attributes' => [{
