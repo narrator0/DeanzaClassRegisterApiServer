@@ -1,7 +1,7 @@
 class User < ApplicationRecord
   # relations
-  has_many :subscribtions
-  has_many :subscribed_courses, through: :subscribtions, source: :course
+  has_many :subscriptions
+  has_many :subscribed_courses, through: :subscriptions, source: :course
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable

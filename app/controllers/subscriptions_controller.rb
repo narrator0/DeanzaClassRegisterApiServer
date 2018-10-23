@@ -1,4 +1,4 @@
-class SubscribtionsController < ApplicationController
+class SubscriptionsController < ApplicationController
   before_action :authorize_request
 
   def subscribe
