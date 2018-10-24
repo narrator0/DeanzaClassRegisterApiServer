@@ -1,7 +1,13 @@
 class User < ApplicationRecord
   # relations
-  has_many :subscriptions
-  has_many :subscribed_courses, through: :subscriptions, source: :course
+  has_many :notify_subscriptions
+  has_many :subscribe_courses, through: :notify_subscriptions, source: :course
+
+  has_many :likes
+  has_many :like_courses, through: :likes, source: :course
+
+  has_many :calendars
+  has_many :calendar_courses, through: :calendars, source: :course
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -14,20 +20,24 @@ class User < ApplicationRecord
 
   # subscribe the course when it is not subscribed
   # otherwise unsubscribe the course
-  def subscribe(crn)
+  # todo: raise error if type in not 'subscribe', 'like', or 'calendar'
+  def subscribe(crn, type = 'subscribe')
     course = Course.find_by(crn: crn, quarter: Rails.application.credentials.quarter)
 
     raise ActiveRecord::RecordNotFound, 'Crn not found!' unless course.present?
+    raise ArgumentError.new('type must be provided!') unless type.present?
 
     begin
-      subscribed_courses << course
+      self.send("#{type}_courses") << course
     rescue ActiveRecord::RecordNotUnique
-      subscribed_courses.destroy course
+      self.send("#{type}_courses").destroy course
     end
   end
 
-  def subscribed_courses_crns
-    subscribed_courses
+  def subscribed_courses_crns(type = 'subscribe')
+    raise ArgumentError.new('type must be provided!') unless type.present?
+
+    self.send("#{type}_courses")
       .where(quarter: Rails.application.credentials.quarter)
       .pluck(:crn)
   end
