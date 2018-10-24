@@ -4,8 +4,8 @@ class Course < ApplicationRecord
 
   # relations
   has_many :lectures, dependent: :destroy
-  has_many :subscribtions
-  has_many :subscribers, through: :subscribtions, source: :user
+  has_many :subscriptions
+  has_many :subscribers, through: :subscriptions, source: :user
   accepts_nested_attributes_for :lectures
 
   # validations

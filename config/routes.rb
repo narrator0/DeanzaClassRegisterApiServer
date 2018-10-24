@@ -13,7 +13,7 @@ Rails.application.routes.draw do
     get   'user/subscriptions' => 'users#subscriptions'
 
     # Subscribe API
-    post 'subscribe' => 'subscribtions#subscribe'
+    post 'subscribe' => 'subscriptions#subscribe'
   end
 
   require "sidekiq/web"

@@ -21,7 +21,7 @@ class UsersController < ApplicationController
   end
 
   def subscriptions
-    render json: @current_user.subscribed_courses_crns
+    render json: @current_user.subscribed_courses_crns(params[:type])
   end
 
   private
