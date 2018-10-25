@@ -24,6 +24,10 @@ class UsersController < ApplicationController
     render json: @current_user.subscribed_courses_crns(params[:type])
   end
 
+  def notifications
+    render json: @current_user.notifications
+  end
+
   private
 
   def user_params

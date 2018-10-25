@@ -46,4 +46,38 @@ RSpec.describe 'User API', type: :request do
       end
     end
   end
+
+  describe 'GET #notifications' do
+    let(:user) { create(:user) }
+    let(:course) { create(:course) }
+
+    context 'when logged in' do
+      let(:auth_token) { JsonWebToken.encode(user_id: user.id) }
+      let(:header) { { 'Authorization' => auth_token } }
+
+      before {
+        user.course_status_update_notifications.create(message: 'test', course_id: course.id)
+        get '/user/notifications', headers: header
+      }
+
+      it 'response 200' do
+        expect(response).to have_http_status(200)
+      end
+
+      it 'response all the notifications' do
+        expect(json.length).to eq(1)
+      end
+    end
+
+    context 'when not logged in' do
+      before {
+        user.course_status_update_notifications.create(message: 'test', course_id: course.id)
+        get '/user/notifications'
+      }
+
+      it 'response 422' do
+        expect(response).to have_http_status(422)
+      end
+    end
+  end
 end

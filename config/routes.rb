@@ -11,6 +11,7 @@ Rails.application.routes.draw do
     # User API
     patch 'users' => 'users#update'
     get   'user/subscriptions' => 'users#subscriptions'
+    get   'user/notifications' => 'users#notifications'
 
     # Subscribe API
     post 'subscribe' => 'subscriptions#subscribe'
