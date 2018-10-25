@@ -15,6 +15,9 @@ Rails.application.routes.draw do
 
     # Subscribe API
     post 'subscribe' => 'subscriptions#subscribe'
+
+    # Notification API
+    patch 'notification/:id/read' => 'notifications#read'
   end
 
   require "sidekiq/web"
