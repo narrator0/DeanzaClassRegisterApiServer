@@ -11,9 +11,13 @@ Rails.application.routes.draw do
     # User API
     patch 'users' => 'users#update'
     get   'user/subscriptions' => 'users#subscriptions'
+    get   'user/notifications' => 'users#notifications'
 
     # Subscribe API
     post 'subscribe' => 'subscriptions#subscribe'
+
+    # Notification API
+    patch 'notification/:id/read' => 'notifications#read'
   end
 
   require "sidekiq/web"

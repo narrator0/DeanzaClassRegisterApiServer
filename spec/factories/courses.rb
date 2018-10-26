@@ -1,9 +1,10 @@
 FactoryBot.define do
   factory :course do
-    crn { Faker::Number.number(10) }
+    crn { Faker::Number.number(4) }
     course 'PHYS 4A'
     department 'CIS'
     quarter Rails.application.credentials.quarter
+    status :Full
 
     transient do
       courses_count 2

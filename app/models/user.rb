@@ -9,6 +9,9 @@ class User < ApplicationRecord
   has_many :calendars
   has_many :calendar_courses, through: :calendars, source: :course
 
+  has_many :notifications
+  has_many :course_status_update_notifications
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
