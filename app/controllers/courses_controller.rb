@@ -3,7 +3,7 @@ class CoursesController < ApplicationController
     json = Rails.cache.fetch(request.original_url) do
       quarter = params[:quarter] || Rails.application.credentials.quarter
 
-      courses = Course.includes(:lectures)
+      courses = Course.select(:id, :crn, :course, :department, :status, :cached_lecture)
                       .where_if_present(department: params[:dept])
                       .where(quarter: quarter)
                       .order(order)

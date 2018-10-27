@@ -1,4 +1,6 @@
 class Course < ApplicationRecord
+  serialize :cached_lecture
+
   # enums
   enum status: [:Open, :Waitlist, :Full]
 
@@ -19,10 +21,6 @@ class Course < ApplicationRecord
   scope :where_if_present, -> (hash) {
     where(hash) if hash.first[1].present?
   }
-
-  def as_json(*)
-    super(include: :lectures)
-  end
 
   private
   def flush_cache

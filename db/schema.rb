@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_24_170827) do
+ActiveRecord::Schema.define(version: 2018_10_27_231513) do
 
   create_table "courses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "crn"
@@ -29,6 +29,7 @@ ActiveRecord::Schema.define(version: 2018_10_24_170827) do
     t.string "class_material"
     t.text "prerequisites_note"
     t.text "prerequisites_advisory"
+    t.text "cached_lecture"
     t.index ["crn"], name: "index_courses_on_crn"
     t.index ["quarter"], name: "index_courses_on_quarter"
   end
