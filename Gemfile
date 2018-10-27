@@ -43,6 +43,7 @@ gem 'whenever', require: false
 
 # error report
 gem 'rollbar', '2.16.3'
+gem 'sentry-raven'
 
 # enable cors
 gem 'rack-cors', require: 'rack/cors'
