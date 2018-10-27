@@ -1,0 +1,16 @@
+sudo: required
+language: ruby
+rvm:
+- 2.4.1
+services:
+- mysql
+before_install:
+- mysql -e 'CREATE DATABASE deanza_class_register_test;'
+before_script:
+- cp config/travis.database.yml config/database.yml
+script:
+- bundle exec rake db:migrate RAILS_ENV=test
+- bundle exec rspec --format documentation
+env:
+  matrix:
+    secure: hmY2eWybc7p2o6CWXH3rD00U18ZMetsx7KZVBicQ5Er+vatvOPMeYvWyBVvz/Gm75T/Ls9OKvx5JT50Moac2HI9KDqsAbzkPEre5JIXGRjXZNDHO+5PfZRsXRYYgXfadQ8WBhvNBSHHTDz6iaCRFl+3x0k1uHiMubQwlN19MeLlbgNrR8TKDQSpYHwMyG9jLWGciLjPj1qGy2bGoX3dDBj+H9omOhBXFcBIW8BdaKkxkZHddlMq39zNQueq/3rnLahx5VBHB/3sd7Tm5lSFvdY72E8kMQEstpaExdn5+LqBMENiLuVenc7w8/Wi7mX2U47ye/d14oMt2wDVVMcJwB6FrG9dNETg5seEiVe76ys/1RhX0Fcbut+DgoBGPNI/BdawBMHBPF36N+t7qGSiDFU69zJ9a36/pN6+n4sC73HteTXDmNMfopRNZdRC4+OYsI6lgVEm2VPMCAl0AjTtnc7ZF6qZBCb4aXarnXbw4AXjAANtm27eRNksIl6qo6FYVRU9bWLxOkX6CB3E0ugOQur7ahk+Y31ZXWynewMqZl3F/kXAvI9F6ppVvNVkGZr8TQGS4/SQdiBcuWYAldufZsz9LPoqEOfBZ19kN53XLnPErgVqGzUb9bhqC59Xf9Bis4OaMJiq5ekWz/VaMIzIDqo47wIwFdcJzChySkdu5slk=
