@@ -1,4 +1,6 @@
-# README
+[![Build Status](https://travis-ci.org/DeanzaClassRegister/DeanzaClassRegisterApiServer.svg?branch=master)](https://travis-ci.org/DeanzaClassRegister/DeanzaClassRegisterApiServer)
+
+# Deanza Class Register API
 
 This README would normally document whatever steps are necessary to get the
 application up and running.
