@@ -17,6 +17,11 @@ class CoursesController < ApplicationController
     render json: json
   end
 
+  def show
+    course = Course.find(params[:id])
+    render json: course.to_json(include: :lectures, except: :cached_lecture)
+  end
+
   private
 
   # manually filter using case

@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
     # Course API
     get 'courses' => 'courses#index'
+    get 'courses/:id' => 'courses#show'
 
     # Auth
     post 'signup' => 'users#create'

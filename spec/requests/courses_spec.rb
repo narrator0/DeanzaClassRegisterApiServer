@@ -34,4 +34,14 @@ RSpec.describe 'Course API', type: :request do
       expect(json['total']).to eq(0)
     end
   end
+
+  describe 'GET courses#show' do
+    before {
+      get "/courses/#{courses.first.id}"
+    }
+
+    it 'response 200' do
+      expect(response).to have_http_status(200)
+    end
+  end
 end
