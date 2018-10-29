@@ -41,6 +41,9 @@ module DeanzaClassRegisterApiServer
 
     Raven.configure do |config|
       config.dsn = 'https://a5d50180da0d448d9584c273dd8d900e:a7fff4ea195544c8927119d559cd3e09@sentry.io/1310327'
+      config.environments = ['staging', 'production']
     end
+
+    Oj.optimize_rails()
   end
 end
