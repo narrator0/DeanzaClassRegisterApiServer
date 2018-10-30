@@ -15,6 +15,7 @@ class DeAnzaScraper
   end
 
   def self.update_myportal_data
+    termcode = Rails.application.credentials.termcode
     course_data = DeAnzaScraper::MyportalScraper.new.scrape(termcode)
     self.update_database(course_data)
   end

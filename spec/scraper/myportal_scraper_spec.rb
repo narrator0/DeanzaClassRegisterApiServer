@@ -2,6 +2,14 @@ require 'rails_helper'
 require_relative '../../lib/scraper/de_anza_scraper'
 
 RSpec.describe DeAnzaScraper do
+  describe '#update_myportal_data' do
+    it 'should run without error' do
+      expect {
+        DeAnzaScraper.update_myportal_data
+      }.to_not raise_error
+    end
+  end
+
   describe '#self.update_database' do
     before(:each) do
       Sidekiq::Worker.clear_all
@@ -14,6 +22,10 @@ RSpec.describe DeAnzaScraper do
       course_hash = HashWithIndifferentAccess.new(@course.attributes.except('id'))
       DeAnzaScraper.update_database([course_hash])
     }
+
+    it 'updates course data' do
+      expect(Course.last.status).to eq('Open')
+    end
 
     it 'creates a notification' do
       notifications = user.course_status_update_notifications
