@@ -48,6 +48,8 @@ class DeAnzaScraper
 
           course.update(data)
         else
+          # todo: this will never happen because course.course is required
+          # need another scraper to update a specific course from deanza.edu
           Course.create(data)
         end
       end
