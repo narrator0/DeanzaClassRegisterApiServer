@@ -4,6 +4,8 @@ require_relative '../../lib/scraper/de_anza_scraper'
 RSpec.describe DeAnzaScraper do
   describe '#update_myportal_data' do
     it 'should run without error' do
+      create(:course)
+
       expect {
         DeAnzaScraper.update_myportal_data
       }.to_not raise_error

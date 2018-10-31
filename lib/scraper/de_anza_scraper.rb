@@ -15,9 +15,15 @@ class DeAnzaScraper
   end
 
   def self.update_myportal_data
-    termcode = Rails.application.credentials.termcode
-    course_data = DeAnzaScraper::MyportalScraper.new.scrape(termcode)
-    self.update_database(course_data)
+    quarter = Rails.application.credentials.quarter
+
+    if Course.where(quarter: quarter).any?
+      termcode = Rails.application.credentials.termcode
+      course_data = DeAnzaScraper::MyportalScraper.new.scrape(termcode)
+      self.update_database(course_data)
+    else
+      self.create_course
+    end
   end
 
   def self.update_course_with_scraper(title)
