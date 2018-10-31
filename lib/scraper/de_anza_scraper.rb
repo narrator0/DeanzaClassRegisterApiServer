@@ -5,19 +5,22 @@ class DeAnzaScraper
   def self.create_course
     # get course data from www.deanza.edu
     update_course_with_scraper('Updating database') do
-      DeAnzaScraper::NewWebsiteScraper.new.scrape(Rails.application.credentials.quarter)
+      DeAnzaScraper::NewWebsiteScraper.new.scrape(quarter)
     end
 
     # get course data from myportal
     update_course_with_scraper('Updating database') do
-      DeAnzaScraper::MyportalScraper.new.scrape(Rails.application.credentials.termcode)
+      DeAnzaScraper::MyportalScraper.new.scrape(termcode)
     end
   end
 
   def self.update_myportal_data
-    termcode = Rails.application.credentials.termcode
-    course_data = DeAnzaScraper::MyportalScraper.new.scrape(termcode)
-    self.update_database(course_data)
+    if Course.where(quarter: quarter).any?
+      course_data = DeAnzaScraper::MyportalScraper.new.scrape(termcode)
+      self.update_database(course_data)
+    else
+      self.create_course
+    end
   end
 
   def self.update_course_with_scraper(title)
@@ -35,7 +38,7 @@ class DeAnzaScraper
       course_data.each do |data|
         progressbar.increment
 
-        if course = Course.find_by(crn: data[:crn], quarter: Rails.application.credentials.quarter)
+        if course = Course.find_by(crn: data[:crn], quarter: quarter)
 
           if data['lectures_attributes'].present?
             data['lectures_attributes'].each do |lecture|
@@ -45,6 +48,8 @@ class DeAnzaScraper
 
           course.update(data)
         else
+          # todo: this will never happen because course.course is required
+          # need another scraper to update a specific course from deanza.edu
           Course.create(data)
         end
       end
@@ -55,9 +60,6 @@ class DeAnzaScraper
   end
 
   def self.update_database(course_data)
-    termcode = Rails.application.credentials.termcode
-    quarter  = Rails.application.credentials.quarter
-
     Course.transaction do
       course_data.each do |data|
         if course = Course.find_by(crn: data[:crn], quarter: quarter)
@@ -80,6 +82,16 @@ class DeAnzaScraper
         end
       end
     end
+  end
+
+  private
+
+  def self.quarter
+    Rails.application.credentials.quarter
+  end
+
+  def self.termcode
+    Rails.application.credentials.termcode
   end
 end
 
