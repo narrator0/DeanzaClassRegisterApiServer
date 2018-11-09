@@ -5,7 +5,11 @@ RSpec.describe 'login API', type: :request do
 
   describe 'POST /login' do
     context 'when valid input' do
-      before { post '/signin', params: { email: user.email, password: 'password' } }
+      before { post '/signin', params: {
+        user: {
+          email: user.email, password: 'password',
+        }
+      }}
 
       it 'responds 200' do
         expect(response).to have_http_status(200)
@@ -17,7 +21,11 @@ RSpec.describe 'login API', type: :request do
     end
 
     context 'when invalid input' do
-      before { post '/signin', params: { email: user.email, password: '' } }
+      before { post '/signin', params: {
+        user: {
+          email: user.email, password: '',
+        }
+      }}
 
       it 'responds 401 unauthorized' do
         expect(response).to have_http_status(401)

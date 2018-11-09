@@ -1,12 +1,12 @@
 class TokensController < ApplicationController
   def create
-    auth_token = AuthenticateUser.authenticate(auth_params[:email], auth_params[:password])
+    auth_token = AuthenticateUser.authenticate(user_params[:email], user_params[:password])
     render json: { auth_token: auth_token }
   end
 
   private
 
-  def auth_params
-    params.permit(:email, :password)
+  def user_params
+    params.require(:user).permit(:email, :password)
   end
 end
