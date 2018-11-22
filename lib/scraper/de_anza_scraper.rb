@@ -66,7 +66,7 @@ class DeAnzaScraper
           course.attributes = data
 
           if course.changed.include?('status')
-            course.subscribers.each do |user|
+            course.notification_subscribers.each do |user|
               user.course_status_update_notifications.create(
                 message: "The class #{course.course} that you've subscribed to has changed its status from #{course.status_was} to #{course.status}",
                 course_id: course.id
