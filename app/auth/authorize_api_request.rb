@@ -30,6 +30,12 @@ class AuthorizeApiRequest
   # decode authentication token
   def decoded_auth_token
     @decoded_auth_token ||= JsonWebToken.decode(http_auth_header)
+
+    if @decoded_auth_token && @decoded_auth_token[:expire] < Time.now.to_i
+      raise(ExceptionHandler::InvalidToken, 'Signature has expired!')
+    else
+      @decoded_auth_token
+    end
   end
 
   # check for token in `Authorization` header
