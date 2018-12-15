@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   defaults format: :json do
+    root 'pages#index'
 
     # Course API
     get 'courses' => 'courses#index'
