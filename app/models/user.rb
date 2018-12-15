@@ -30,9 +30,9 @@ class User < ApplicationRecord
     raise ActiveRecord::RecordNotFound, 'Crn not found!' unless course.present?
     raise ArgumentError.new('type must be provided!') unless type.present?
 
-    begin
+    unless self.send("#{type}_courses").include?(course)
       self.send("#{type}_courses") << course
-    rescue ActiveRecord::RecordNotUnique
+    else
       self.send("#{type}_courses").destroy course
     end
   end
