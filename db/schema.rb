@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_27_231513) do
+ActiveRecord::Schema.define(version: 2018_12_14_203237) do
 
   create_table "courses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "crn"
@@ -65,7 +65,7 @@ ActiveRecord::Schema.define(version: 2018_10_27_231513) do
     t.datetime "updated_at", null: false
     t.string "type"
     t.index ["course_id"], name: "index_subscriptions_on_course_id"
-    t.index ["user_id", "course_id"], name: "index_subscriptions_on_user_id_and_course_id", unique: true
+    t.index ["user_id", "course_id"], name: "index_subscriptions_on_user_id_and_course_id"
     t.index ["user_id"], name: "index_subscriptions_on_user_id"
   end
 

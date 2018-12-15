@@ -53,6 +53,28 @@ RSpec.describe 'Subscribe API', type: :request do
       end
     end
 
+    context 'subscribe to courses that is liked or added to calendar' do
+      before { user.calendar_courses << course }
+      before {
+        post(
+          '/subscribe',
+          params: {
+            crn: course.crn,
+            type: 'subscribe',
+          },
+          headers: header
+        )
+      }
+
+      it 'should responds 200' do
+        expect(response).to have_http_status(200)
+      end
+
+      it 'should subscribe to all of the courses' do
+        expect(user.subscribe_courses.length).to eq(1)
+      end
+    end
+
     context 'like when course is not subscribed' do
       before {
         post '/subscribe',
