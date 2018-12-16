@@ -6,21 +6,21 @@ Rails.application.routes.draw do
     get 'courses' => 'courses#index'
     get 'courses/:id' => 'courses#show'
 
+    # User API
+    patch 'users' => 'users#update' # devise also has this path, so make it before devise
+    get   'user/subscriptions' => 'users#subscriptions'
+    get   'user/notifications' => 'users#notifications'
+
     # Auth
-    devise_for :users, only: [:sessions], controllers: {
-      sessions: 'users/sessions'
+    devise_for :users, only: [:registrations, :sessions], controller: {
+      registrations: 'users/registrations',
+      sessions: 'users/sessions',
     }
 
     devise_scope :user do
       post 'signin' => 'users/sessions#create'
+      post 'signup' => 'users/registrations#create'
     end
-
-    post 'signup' => 'users#create'
-
-    # User API
-    patch 'users' => 'users#update'
-    get   'user/subscriptions' => 'users#subscriptions'
-    get   'user/notifications' => 'users#notifications'
 
     # Subscribe API
     post 'subscribe' => 'subscriptions#subscribe'

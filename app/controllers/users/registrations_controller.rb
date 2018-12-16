@@ -10,9 +10,22 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   # POST /resource
-  # def create
-  #   super
-  # end
+  def create
+    build_resource(sign_up_params)
+
+    resource.save
+    yield resource if block_given?
+    if resource.persisted?
+      sign_up(resource_name, resource)
+
+      token = JsonWebToken.encode(user_id: resource.id)
+      render json: { user: resource, token: token }.to_json, status: :created
+    else
+      clean_up_passwords resource
+      set_minimum_password_length
+      render json: resource.errors, status: :unprocessable_entity
+    end
+  end
 
   # GET /resource/edit
   # def edit
