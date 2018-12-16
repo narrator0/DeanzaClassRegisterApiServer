@@ -44,4 +44,9 @@ class User < ApplicationRecord
       .where(quarter: Rails.application.credentials.quarter)
       .pluck(:crn)
   end
+
+  # overwrite devise to use sidekiq
+  def send_devise_notification(notification, *args)
+    devise_mailer.send(notification, self, *args).deliver_later
+  end
 end

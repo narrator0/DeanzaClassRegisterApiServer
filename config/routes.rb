@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
-  defaults format: :json do
-    root 'pages#index'
+  root 'pages#index'
 
+  defaults format: :json do
     # Course API
     get 'courses' => 'courses#index'
     get 'courses/:id' => 'courses#show'
@@ -12,9 +12,10 @@ Rails.application.routes.draw do
     get   'user/notifications' => 'users#notifications'
 
     # Auth
-    devise_for :users, only: [:registrations, :sessions], controller: {
+    devise_for :users, only: [:registrations, :sessions, :passwords], controllers: {
       registrations: 'users/registrations',
       sessions: 'users/sessions',
+      passwords: 'users/passwords',
     }
 
     devise_scope :user do
