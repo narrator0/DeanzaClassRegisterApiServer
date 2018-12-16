@@ -7,8 +7,15 @@ Rails.application.routes.draw do
     get 'courses/:id' => 'courses#show'
 
     # Auth
+    devise_for :users, only: [:sessions], controllers: {
+      sessions: 'users/sessions'
+    }
+
+    devise_scope :user do
+      post 'signin' => 'users/sessions#create'
+    end
+
     post 'signup' => 'users#create'
-    post 'signin' => 'tokens#create'
 
     # User API
     patch 'users' => 'users#update'
