@@ -1,22 +1,24 @@
 Rails.application.routes.draw do
   root 'pages#index'
 
+  # devise also has this path, so make it before devise
+  patch 'users' => 'users#update', defaults: { format: 'json' }
+
+  # Auth
+  devise_for :users, only: [:registrations, :sessions, :passwords], controllers: {
+    registrations: 'users/registrations',
+    sessions: 'users/sessions',
+    passwords: 'users/passwords',
+  }
+
   defaults format: :json do
     # Course API
     get 'courses' => 'courses#index'
     get 'courses/:id' => 'courses#show'
 
     # User API
-    patch 'users' => 'users#update' # devise also has this path, so make it before devise
     get   'user/subscriptions' => 'users#subscriptions'
     get   'user/notifications' => 'users#notifications'
-
-    # Auth
-    devise_for :users, only: [:registrations, :sessions, :passwords], controllers: {
-      registrations: 'users/registrations',
-      sessions: 'users/sessions',
-      passwords: 'users/passwords',
-    }
 
     devise_scope :user do
       post 'signin' => 'users/sessions#create'
