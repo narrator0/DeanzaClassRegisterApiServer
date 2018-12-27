@@ -164,5 +164,27 @@ RSpec.describe 'Subscribe API', type: :request do
         expect(user.reload.calendar_courses.length).to eq(0)
       end
     end
+
+    context 'when time conflicts' do
+      before { user.calendar_courses << create(:course) }
+      before {
+        post(
+          '/subscribe',
+          params: {
+            crn: course.crn,
+            type: 'calendar',
+          },
+          headers: header
+        )
+      }
+
+      it 'should respond 422' do
+        expect(response).to have_http_status(422)
+      end
+
+      it 'should return an error message' do
+        expect(json['message']).to match(/conflict/)
+      end
+    end
   end
 end
