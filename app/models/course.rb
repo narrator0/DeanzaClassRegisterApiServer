@@ -33,6 +33,16 @@ class Course < ApplicationRecord
     where(hash) if hash.first[1].present?
   }
 
+  def conflict_with?(course)
+    lectures.each do |lecture1|
+      course.lectures.each do |lecture2|
+        return true if lecture1.conflict_with? lecture2
+      end
+    end
+
+    false
+  end
+
   private
   def flush_cache
     Rails.cache.clear
