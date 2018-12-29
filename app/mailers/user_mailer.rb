@@ -4,6 +4,7 @@ class UserMailer < ApplicationMailer
     @origin_status  = origin_status
     @current_status = current_status
     @course = course
+    @lecture = @course.lectures.first
 
     mail(to: @user.email, subject: "Status of #{@course.course} has become \"#{@current_status}\"")
   end
