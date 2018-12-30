@@ -44,6 +44,20 @@ RSpec.describe 'Notification API', type: :request do
         expect(response).to have_http_status(404)
       end
     end
+
+    context 'notification not owned by the user' do
+      let(:auth_token) { JsonWebToken.encode(user_id: notification.user.id) }
+      let(:header) { { 'Authorization' => auth_token } }
+
+      before {
+        other_notification = create(:course_status_update_notification)
+        patch "/notification/#{other_notification.id}/read", headers: header
+      }
+
+      it 'response 404' do
+        expect(response).to have_http_status(404)
+      end
+    end
   end
 
   describe 'PATCH /notificaation/readAll' do
