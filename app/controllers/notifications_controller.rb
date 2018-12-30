@@ -5,4 +5,8 @@ class NotificationsController < ApplicationController
     Notification.find(params[:id]).read!
     head :no_content
   end
+
+  def read_all
+    current_user.notifications.read_all
+  end
 end
