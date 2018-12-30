@@ -22,6 +22,10 @@ class CoursesController < ApplicationController
     render json: course.to_json(include: :lectures, except: :cached_lecture)
   end
 
+  def quarters
+    render json: Course.pluck(:quarter).uniq
+  end
+
   private
 
   # manually filter using case

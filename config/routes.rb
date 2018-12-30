@@ -14,11 +14,12 @@ Rails.application.routes.draw do
   defaults format: :json do
     # Course API
     get 'courses' => 'courses#index'
+    get 'courses/quarters' => 'courses#quarters'
     get 'courses/:id' => 'courses#show'
 
     # User API
-    get   'user/subscriptions' => 'users#subscriptions'
-    get   'user/notifications' => 'users#notifications'
+    get 'user/subscriptions' => 'users#subscriptions'
+    get 'user/notifications' => 'users#notifications'
 
     devise_scope :user do
       post 'signin' => 'users/sessions#create'
