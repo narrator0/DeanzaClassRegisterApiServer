@@ -31,6 +31,7 @@ Rails.application.routes.draw do
 
     # Notification API
     patch 'notification/:id/read' => 'notifications#read'
+    patch 'notification/readAll' => 'notifications#read_all'
   end
 
   require "sidekiq/web"
