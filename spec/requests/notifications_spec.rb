@@ -45,5 +45,39 @@ RSpec.describe 'Notification API', type: :request do
       end
     end
   end
+
+  describe 'PATCH /notificaation/readAll' do
+    let(:user) { create(:user) }
+    before {
+      create_list(:course_status_update_notification, 3, user: user)
+    }
+
+    context 'when logged in' do
+      let(:auth_token) { JsonWebToken.encode(user_id: user.id) }
+      let(:header) { { 'Authorization' => auth_token } }
+
+      before {
+        patch '/notification/readAll', headers: header
+      }
+
+      it 'response 204' do
+        expect(response).to have_http_status(204)
+      end
+
+      it 'updates all the notifications to read' do
+        expect(Notification.pluck(:read)).to eq([true, true, true])
+      end
+    end
+
+    context 'when not logged in' do
+      before {
+        patch '/notification/readAll'
+      }
+
+      it 'response 422' do
+        expect(response).to have_http_status(422)
+      end
+    end
+  end
 end
 
