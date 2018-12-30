@@ -44,4 +44,19 @@ RSpec.describe 'Course API', type: :request do
       expect(response).to have_http_status(200)
     end
   end
+
+  describe 'GET courses#quarters' do
+    before {
+      create(:course)
+      get '/courses/quarters'
+    }
+
+    it 'response 200' do
+      expect(response).to have_http_status(200)
+    end
+
+    it 'response all quarters' do
+      expect(json[0]).to eq(Rails.application.credentials.quarter)
+    end
+  end
 end
