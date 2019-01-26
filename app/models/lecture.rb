@@ -9,11 +9,13 @@ class Lecture < ApplicationRecord
   after_commit :cache_lecture
 
   def start_time
-    Time.parse times.scan(/[0-9]+:[0-9]+ [APM]+/)[0]
+    time_string = times.scan(/[0-9]+:[0-9]+ [APM]+/)[0]
+    time_string && Time.parse(time_string)
   end
 
   def end_time
-    Time.parse times.scan(/[0-9]+:[0-9]+ [APM]+/)[1]
+    time_string = times.scan(/[0-9]+:[0-9]+ [APM]+/)[1]
+    time_string && Time.parse(time_string)
   end
 
   def conflict_with?(lecture)

@@ -6,5 +6,9 @@ FactoryBot.define do
     instructor { Faker::Name.name }
     location { 'S32' }
     course
+
+    trait :with_tba_times do
+      times { 'TBA - TBA' }
+    end
   end
 end
