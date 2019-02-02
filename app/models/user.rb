@@ -22,7 +22,11 @@ class User < ApplicationRecord
 
   def as_json(*)
     super(except: :id).tap do |hash|
-      hash['avatar_url'] = Rails.application.routes.url_helpers.rails_blob_path(avatar, only_path: true)
+      if avatar.attached?
+        hash['avatar_url'] = Rails.application.routes.url_helpers.rails_blob_path(avatar, only_path: true)
+      else
+        hash['avatar_url'] = nil
+      end
     end
   end
 
