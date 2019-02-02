@@ -17,8 +17,13 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  # active storage settings
+  has_one_attached :avatar
+
   def as_json(*)
-    super(except: :id)
+    super(except: :id).tap do |hash|
+      hash['avatar_url'] = Rails.application.routes.url_helpers.rails_blob_path(avatar, only_path: true)
+    end
   end
 
   # subscribe the course when it is not subscribed
