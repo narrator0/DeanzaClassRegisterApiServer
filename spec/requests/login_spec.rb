@@ -18,6 +18,10 @@ RSpec.describe 'login API', type: :request do
       it 'responds a valid token' do
         expect(response_token[:user_id]).to eq(user.id)
       end
+
+      it 'responds the user information' do
+        expect(json['user']['name']).to eq(user.name)
+      end
     end
 
     context 'when invalid input' do

@@ -13,7 +13,7 @@ class Users::SessionsController < Devise::SessionsController
     self.resource = warden.authenticate!(auth_options)
     auth_token = JsonWebToken.encode(user_id: resource.id)
 
-    render json: { auth_token: auth_token }
+    render json: { user: self.resource, auth_token: auth_token }
   end
 
   # DELETE /resource/sign_out

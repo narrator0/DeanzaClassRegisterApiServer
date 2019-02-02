@@ -11,6 +11,10 @@ RSpec.describe 'User API', type: :request do
         expect(User.last.email).to eq(user_attributes[:email])
       end
 
+      it 'has a user name' do
+        expect(User.last.name).to eq(user_attributes[:name])
+      end
+
       it 'responds 201' do
         expect(response).to have_http_status(201)
       end
