@@ -4,7 +4,7 @@ RSpec.describe 'Subscribe API', type: :request do
   let(:user) { create(:user) }
   let(:auth_token) { JsonWebToken.encode(user_id: user.id) }
   let(:header) { { 'Authorization' => auth_token } }
-  let(:course) { create(:course) }
+  let(:course) { create(:course, :with_lectures) }
 
   # todo: refactor duplicate tests
   describe 'POST /subscribe' do
@@ -166,7 +166,7 @@ RSpec.describe 'Subscribe API', type: :request do
     end
 
     context 'when time conflicts' do
-      before { user.calendar_courses << create(:course) }
+      before { user.calendar_courses << create(:course, :with_lectures) }
       before {
         post(
           '/subscribe',
@@ -184,6 +184,24 @@ RSpec.describe 'Subscribe API', type: :request do
 
       it 'should return an error message' do
         expect(json['message']).to match(/conflict/)
+      end
+    end
+
+    context 'when TBA lectures' do
+      before { user.calendar_courses << create(:course, :with_tba_lectures) }
+      before {
+        post(
+          '/subscribe',
+          params: {
+            crn: course.crn,
+            type: 'calendar',
+          },
+          headers: header
+        )
+      }
+
+      it 'should respond 422' do
+        expect(response).to have_http_status(200)
       end
     end
   end

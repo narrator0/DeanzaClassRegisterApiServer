@@ -18,7 +18,12 @@ class Lecture < ApplicationRecord
     time_string && Time.parse(time_string)
   end
 
+  def online_course?
+    times == 'TBA-TBA'
+  end
+
   def conflict_with?(lecture)
+    return false if self.online_course? || lecture.online_course?
     !(start_time > lecture.end_time || lecture.start_time > end_time)
   end
 
