@@ -8,7 +8,7 @@ FactoryBot.define do
     course
 
     trait :with_tba_times do
-      times { 'TBA - TBA' }
+      times { 'TBA-TBA' }
     end
   end
 end
