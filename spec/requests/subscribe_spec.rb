@@ -208,7 +208,30 @@ RSpec.describe 'Subscribe API', type: :request do
         )
       }
 
-      it 'should respond 422' do
+      it 'should respond 200' do
+        expect(response).to have_http_status(200)
+      end
+    end
+
+    context 'contains calendar for different terms' do
+      before {
+        user.calendar_courses << create(
+          :course, :with_lectures, quarter: '2016F'
+        )
+      }
+
+      before {
+        post(
+          '/subscribe',
+          params: {
+            crn: course.crn,
+            type: 'calendar',
+          },
+          headers: header
+        )
+      }
+
+      it 'should respond 200' do
         expect(response).to have_http_status(200)
       end
     end
