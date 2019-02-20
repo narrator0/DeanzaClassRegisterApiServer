@@ -10,7 +10,7 @@ class Calendar < Subscription
 
     user.calendar_courses.each do |c|
       if self.course.conflict_with? c
-        errors.add(:lecture_times, "conflict with #{self.course.course}.")
+        errors.add(:lecture_times, "conflict with #{c.course}.")
       end
     end
   end

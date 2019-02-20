@@ -166,7 +166,14 @@ RSpec.describe 'Subscribe API', type: :request do
     end
 
     context 'when time conflicts' do
-      before { user.calendar_courses << create(:course, :with_lectures) }
+      before {
+        user.calendar_courses << create(
+          :course,
+          :with_lectures,
+          course: 'CIS 21JA'
+        )
+      }
+
       before {
         post(
           '/subscribe',
@@ -184,6 +191,7 @@ RSpec.describe 'Subscribe API', type: :request do
 
       it 'should return an error message' do
         expect(json['message']).to match(/conflict/)
+        expect(json['message']).to match(/CIS 21JA/)
       end
     end
 
