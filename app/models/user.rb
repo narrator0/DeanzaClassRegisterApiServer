@@ -20,6 +20,10 @@ class User < ApplicationRecord
   # active storage settings
   has_one_attached :avatar
 
+  def current_calendar
+    calendar_courses.where(quarter: Rails.application.credentials.quarter)
+  end
+
   def as_json(*)
     super(except: :id).tap do |hash|
       if avatar.attached?
