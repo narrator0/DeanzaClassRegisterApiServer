@@ -300,7 +300,7 @@ DEPENDENCIES
   pry
   puma (~> 3.11)
   rack-cors
-  rails (~> 5.2.0)
+  rails (~> 5.2.2.1)
   rest-client
   rollbar (= 2.16.3)
   rspec-rails (~> 3.5)
