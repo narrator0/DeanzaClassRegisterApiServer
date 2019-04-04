@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :authorize_request, except: :create
+  before_action :authorize_request
 
   def update
     if @current_user.update(user_params)
@@ -15,6 +15,10 @@ class UsersController < ApplicationController
 
   def notifications
     render json: @current_user.notifications
+  end
+
+  def information
+    render json: { user: @current_user }.to_json
   end
 
   private
