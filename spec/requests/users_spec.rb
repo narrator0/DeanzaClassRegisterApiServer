@@ -84,4 +84,26 @@ RSpec.describe 'User API', type: :request do
       end
     end
   end
+
+  describe 'GET #information' do
+    let(:user) { create(:user) }
+    let(:auth_token) { JsonWebToken.encode(user_id: user.id) }
+    let(:header) { { 'Authorization' => auth_token } }
+
+    context 'when logged in' do
+      before { get '/user/information', headers: header }
+
+      it 'response 200' do
+        expect(response).to have_http_status(200)
+      end
+    end
+
+    context 'when not logged in' do
+      before { get '/user/information' }
+
+      it 'response 422' do
+        expect(response).to have_http_status(422)
+      end
+    end
+  end
 end

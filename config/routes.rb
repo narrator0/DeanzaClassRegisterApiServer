@@ -20,6 +20,7 @@ Rails.application.routes.draw do
     # User API
     get 'user/subscriptions' => 'users#subscriptions'
     get 'user/notifications' => 'users#notifications'
+    get 'user/information'   => 'users#information'
 
     devise_scope :user do
       post 'signin' => 'users/sessions#create'
