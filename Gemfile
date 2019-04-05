@@ -54,6 +54,8 @@ gem 'oj'
 # file upload
 gem 'aws-sdk-s3', require: false
 
+gem 'newrelic_rpm'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
