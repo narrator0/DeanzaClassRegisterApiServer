@@ -60,25 +60,19 @@ class DeAnzaScraper
   end
 
   def self.update_database(course_data)
-    Course.transaction do
-      course_data.each do |data|
-        if course = Course.find_by(crn: data[:crn], quarter: quarter)
-          course.attributes = data
+    db_course_data = Course.where(quarter: quarter)
+    course_data.each do |data|
+      if course = db_course_data.find { |course| course.crn == data[:crn] }
+        if course.status != data[:status]
+          course.notification_subscribers.each do |user|
+            user.course_status_update_notifications.create(
+              message: "The class #{course.course} that you've subscribed to has changed its status from #{course.status} to #{data[:status]}",
+              course_id: course.id
+            )
 
-          if course.changed.include?('status')
-            course.notification_subscribers.each do |user|
-              user.course_status_update_notifications.create(
-                message: "The class #{course.course} that you've subscribed to has changed its status from #{course.status_was} to #{course.status}",
-                course_id: course.id
-              )
-
-              UserMailer.notify_status_change(user, course, course.status_was, course.status).deliver_later!
-            end
+            UserMailer.notify_status_change(user, course, course.status, data[:status]).deliver_later!
           end
-
-          course.save if course.changed?
-        else
-          Course.create(data)
+          course.update(data)
         end
       end
     end
