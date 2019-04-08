@@ -60,9 +60,10 @@ class DeAnzaScraper
   end
 
   def self.update_database(course_data)
-    db_course_data = Course.where(quarter: quarter)
+    db_course_data = Course.where(quarter: quarter).to_a
     course_data.each do |data|
-      if course = db_course_data.find { |course| course.crn == data[:crn] }
+      if index = db_course_data.find_index { |course| course.crn == data[:crn] }
+        course = db_course_data.delete_at(index)
         if course.status != data[:status]
           course.notification_subscribers.each do |user|
             user.course_status_update_notifications.create(
