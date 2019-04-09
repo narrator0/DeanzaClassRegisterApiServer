@@ -77,6 +77,15 @@ class DeAnzaScraper
         end
       end
     end
+
+    # sometime after the quarter, some course will disappear on
+    # the list. in order not to delete most of the course
+    # check here if there are at least 1000 courses
+    if db_course_data.any? && course_data.length > 1000
+      db_course_data.each do |course|
+        course.destroy
+      end
+    end
   end
 
   private
