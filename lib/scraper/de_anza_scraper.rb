@@ -73,8 +73,10 @@ class DeAnzaScraper
 
             UserMailer.notify_status_change(user, course, course.status, data[:status]).deliver_later!
           end
-          course.update(data)
         end
+
+        # need to update the seats information
+        course.update(data)
       end
     end
 
