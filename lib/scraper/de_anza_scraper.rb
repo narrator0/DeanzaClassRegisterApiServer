@@ -60,7 +60,10 @@ class DeAnzaScraper
   end
 
   def self.update_database(course_data)
-    db_course_data = Course.where(quarter: quarter).to_a
+    db_course_data = Course.where(quarter: quarter).select(
+      :id, :crn, :course, :status,
+      :seats_available, :waitlist_slots_available, :waitlist_slots_capacity,
+    ).to_a
     course_data.each do |data|
       if index = db_course_data.find_index { |course| course.crn == data[:crn] }
         course = db_course_data.delete_at(index)
@@ -76,7 +79,9 @@ class DeAnzaScraper
         end
 
         # need to update the seats information
-        course.update(data)
+        # use update_columns to skip callbacks
+        # in this case, the flush_cache callback
+        course.update_columns(data)
       end
     end
 
@@ -88,6 +93,9 @@ class DeAnzaScraper
         course.destroy
       end
     end
+
+    # clear the cache all at once
+    Rails.cache.clear
   end
 
   private
