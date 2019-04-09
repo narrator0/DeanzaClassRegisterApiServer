@@ -235,5 +235,25 @@ RSpec.describe 'Subscribe API', type: :request do
         expect(response).to have_http_status(200)
       end
     end
+
+    context 'have course in a different day but same time' do
+      it 'sould respond 200' do
+        saved_course = create(:course, lectures: [create(:lecture, days: 'M······')])
+        user.calendar_courses << saved_course
+        intend_added_course = create(:course, lectures: [create(:lecture, days: '·T·····')])
+
+        post(
+          '/subscribe',
+          params: {
+            crn: intend_added_course.crn,
+            type: 'calendar',
+          },
+          headers: header
+        )
+
+        expect(response).to have_http_status(200)
+      end
+    end
   end
 end
+
