@@ -22,8 +22,25 @@ class Lecture < ApplicationRecord
     times == 'TBA-TBA'
   end
 
+  def parsed_days
+    {
+      monday: days.match?(/M/),
+      tuesday: days.match?(/T/),
+      wednesday: days.match?(/W/),
+      thursday: days.match?(/R/),
+      friday: days.match?(/F/),
+    }
+  end
+
   def conflict_with?(lecture)
     return false if self.online_course? || lecture.online_course?
+
+    overlap_days = false
+    parsed_days.each do |key, value|
+      overlap_days = true if value && lecture.parsed_days[key]
+    end
+    return false unless overlap_days
+
     !(start_time > lecture.end_time || lecture.start_time > end_time)
   end
 
