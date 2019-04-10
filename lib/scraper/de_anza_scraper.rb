@@ -78,10 +78,13 @@ class DeAnzaScraper
           end
         end
 
-        # need to update the seats information
-        # use update_columns to skip callbacks
-        # in this case, the flush_cache callback
-        course.update_columns(data)
+        course.attributes = data
+        if course.changed?
+          # need to update the seats information
+          # use update_columns to skip callbacks
+          # in this case, the flush_cache callback
+          course.update_columns(data)
+        end
       end
     end
 
