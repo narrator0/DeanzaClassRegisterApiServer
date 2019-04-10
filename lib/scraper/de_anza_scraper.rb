@@ -60,7 +60,10 @@ class DeAnzaScraper
   end
 
   def self.update_database(course_data)
-    db_course_data = Course.where(quarter: quarter).to_a
+    db_course_data = Course.where(quarter: quarter).select(
+      :id, :crn, :course, :status,
+      :seats_available, :waitlist_slots_available, :waitlist_slots_capacity,
+    ).to_a
     course_data.each do |data|
       if index = db_course_data.find_index { |course| course.crn == data[:crn] }
         course = db_course_data.delete_at(index)
@@ -73,10 +76,29 @@ class DeAnzaScraper
 
             UserMailer.notify_status_change(user, course, course.status, data[:status]).deliver_later!
           end
-          course.update(data)
+        end
+
+        course.attributes = data
+        if course.changed?
+          # need to update the seats information
+          # use update_columns to skip callbacks
+          # in this case, the flush_cache callback
+          course.update_columns(data)
         end
       end
     end
+
+    # sometime after the quarter, some course will disappear on
+    # the list. in order not to delete most of the course
+    # check here if there are at least 1000 courses
+    if db_course_data.any? && course_data.length > 1000
+      db_course_data.each do |course|
+        course.destroy
+      end
+    end
+
+    # clear the cache all at once
+    Rails.cache.clear
   end
 
   private
