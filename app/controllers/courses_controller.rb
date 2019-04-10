@@ -1,17 +1,22 @@
 class CoursesController < ApplicationController
+  extend ::NewRelic::Agent::MethodTracer
+
   def index
-    json = Rails.cache.fetch(request.original_url) do
-      quarter = params[:quarter] || Rails.application.credentials.quarter
+    json = nil
+    self.class.trace_execution_scoped(['slow/courses/index']) do
+      json = Rails.cache.fetch(request.original_url) do
+        quarter = params[:quarter] || Rails.application.credentials.quarter
 
-      courses = Course.select(:id, :crn, :course, :department, :status, :cached_lecture)
-                      .where_if_present(department: params[:dept])
-                      .where(quarter: quarter)
-                      .order(order)
+        courses = Course.select(:id, :crn, :course, :department, :status, :cached_lecture)
+                        .where_if_present(department: params[:dept])
+                        .where(quarter: quarter)
+                        .order(order)
 
-      {
-        total: courses.length,
-        data: courses
-      }.to_json
+        {
+          total: courses.length,
+          data: courses
+        }.to_json
+      end
     end
 
     render json: json
