@@ -64,26 +64,29 @@ class DeAnzaScraper
       :id, :crn, :course, :status,
       :seats_available, :waitlist_slots_available, :waitlist_slots_capacity,
     ).to_a
-    course_data.each do |data|
-      if index = db_course_data.find_index { |course| course.crn == data[:crn] }
-        course = db_course_data.delete_at(index)
-        if course.status != data[:status]
-          course.notification_subscribers.each do |user|
-            user.course_status_update_notifications.create(
-              message: "The class #{course.course} that you've subscribed to has changed its status from #{course.status} to #{data[:status]}",
-              course_id: course.id
-            )
 
-            UserMailer.notify_status_change(user, course, course.status, data[:status]).deliver_later!
+    Course.transaction do
+      course_data.each do |data|
+        if index = db_course_data.find_index { |course| course.crn == data[:crn] }
+          course = db_course_data.delete_at(index)
+          if course.status != data[:status]
+            course.notification_subscribers.each do |user|
+              user.course_status_update_notifications.create(
+                message: "The class #{course.course} that you've subscribed to has changed its status from #{course.status} to #{data[:status]}",
+                course_id: course.id
+              )
+
+              UserMailer.notify_status_change(user, course, course.status, data[:status]).deliver_later!
+            end
           end
-        end
 
-        course.attributes = data
-        if course.changed?
-          # need to update the seats information
-          # use update_columns to skip callbacks
-          # in this case, the flush_cache callback
-          course.update_columns(data)
+          course.attributes = data
+          if course.changed?
+            # need to update the seats information
+            # use update_columns to skip callbacks
+            # in this case, the flush_cache callback
+            course.update_columns(data)
+          end
         end
       end
     end
@@ -92,8 +95,10 @@ class DeAnzaScraper
     # the list. in order not to delete most of the course
     # check here if there are at least 1000 courses
     if db_course_data.any? && course_data.length > 1000
-      db_course_data.each do |course|
-        course.destroy
+      Course.transaction do
+        db_course_data.each do |course|
+          course.destroy
+        end
       end
     end
 
