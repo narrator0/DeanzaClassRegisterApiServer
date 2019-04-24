@@ -49,7 +49,7 @@ class Lecture < ApplicationRecord
   def cache_lecture
     # in case of delete, self.course.lectures could be nil
     if lecture = self.course.lectures.first
-      self.course.update(cached_lecture: lecture.attributes.slice('title', 'instructor'))
+      self.course.update(cached_lecture: lecture.attributes.slice('title', 'instructor', 'days', 'times'))
     elsif self.course.persisted?
       self.course.update(cached_lecture: {})
     end
