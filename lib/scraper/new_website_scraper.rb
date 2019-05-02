@@ -9,7 +9,9 @@ class DeAnzaScraper
 
       trs = html.css('.table-schedule tbody tr')
       first_row = trs[0].css('td')
-      second_row = trs[1].css('td')
+      if trs[1]
+        second_row = trs[1].css('td')
+      end
 
       course = {
         crn: crn,

@@ -87,6 +87,12 @@ class DeAnzaScraper
             # in this case, the flush_cache callback
             course.update_columns(data)
           end
+        else
+          # create the course here
+          # get the full course data first
+          course = DeAnzaScraper::NewWebsiteScraper.new.get_course(data[:crn], quarter)
+          course.merge!(data)
+          Course.create(course)
         end
       end
     end
