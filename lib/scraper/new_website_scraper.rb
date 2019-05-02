@@ -7,6 +7,9 @@ class DeAnzaScraper
     def get_course(crn, quarter)
       html = get_parsed_html course_detail_url(crn, quarter)
 
+      # handle course not found
+      return nil if html.css('h2').first.text == 'Ooops...'
+
       trs = html.css('.table-schedule tbody tr')
       first_row = trs[0].css('td')
       if trs[1]
