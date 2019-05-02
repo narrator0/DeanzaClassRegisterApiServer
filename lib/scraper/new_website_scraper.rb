@@ -4,6 +4,52 @@ class DeAnzaScraper
       get_courses(department_list, quarter)
     end
 
+    def get_course(crn, quarter)
+      html = get_parsed_html course_detail_url(crn, quarter)
+
+      trs = html.css('.table-schedule tbody tr')
+      first_row = trs[0].css('td')
+      if trs[1]
+        second_row = trs[1].css('td')
+      end
+
+      course = {
+        crn: crn,
+        course: html.css('small').first.text,
+        department: html.css('small').first.text.split(' ')[0],
+        quarter: quarter,
+        description: html.css('h3 + p').first.text,
+        class_material: html.css('.table-schedule + p a').first.attr('href'),
+        prerequisites_note: '',
+        prerequisites_advisory: '',
+
+        'lectures_attributes' => [{
+            title:      html.css('h2')[0].text,
+            days:       first_row[3].text,
+            times:      first_row[4].text,
+            instructor: first_row[5].text,
+            location:   first_row[6].text,
+        }],
+      }
+
+      if second_row
+        course['lectures_attributes'].push({
+          title:      'LAB',
+          days:       second_row[0].text,
+          times:      second_row[1].text,
+          instructor: second_row[2].text,
+          location:   second_row[3].text,
+        })
+      end
+
+      dt_tags = html.css('h3 + dl dt').each do |dt|
+        course[:prerequisites_note] = dt.next_element.try(:text) if dt.text == 'Note'
+        course[:prerequisites_advisory] = dt.next_element.try(:text) if dt.text == 'Advisory'
+      end
+
+      course
+    end
+
     private
     def department_list
       html = get_parsed_html 'https://www.deanza.edu/schedule/'
@@ -55,8 +101,6 @@ class DeAnzaScraper
 
         html = get_parsed_html course_detail_url(course[:crn], quarter)
 
-        note = ''
-        advisory = ''
         dt_tags = html.css('h3 + dl dt').each do |dt|
           course[:prerequisites_note] = dt.next_element.try(:text) if dt.text == 'Note'
           course[:prerequisites_advisory] = dt.next_element.try(:text) if dt.text == 'Advisory'
