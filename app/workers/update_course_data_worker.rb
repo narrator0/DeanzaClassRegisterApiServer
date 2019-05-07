@@ -4,6 +4,6 @@ class UpdateCourseDataWorker
 
   def perform(*args)
     require_relative '../../lib/scraper/de_anza_scraper'
-    DeAnzaScraper.update_myportal_data
+    DeAnzaScraper.update_status
   end
 end

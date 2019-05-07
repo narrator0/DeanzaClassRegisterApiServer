@@ -7,16 +7,11 @@ class DeAnzaScraper
     update_course_with_scraper('Updating database') do
       DeAnzaScraper::NewWebsiteScraper.new.scrape(quarter)
     end
-
-    # get course data from myportal
-    update_course_with_scraper('Updating database') do
-      DeAnzaScraper::MyportalScraper.new.scrape(termcode)
-    end
   end
 
-  def self.update_myportal_data
+  def self.update_status
     if Course.where(quarter: quarter).any?
-      course_data = DeAnzaScraper::MyportalScraper.new.scrape(termcode)
+      course_data = DeAnzaScraper::NewWebsiteScraper.new.get_courses_status(quarter)
       self.update_database(course_data)
     else
       self.create_course
@@ -62,7 +57,6 @@ class DeAnzaScraper
   def self.update_database(course_data)
     db_course_data = Course.where(quarter: quarter).select(
       :id, :crn, :course, :status,
-      :seats_available, :waitlist_slots_available, :waitlist_slots_capacity,
     ).to_a
 
     Course.transaction do
@@ -78,11 +72,7 @@ class DeAnzaScraper
 
               UserMailer.notify_status_change(user, course, course.status, data[:status]).deliver_later!
             end
-          end
 
-          course.attributes = data
-          if course.changed?
-            # need to update the seats information
             # use update_columns to skip callbacks
             # in this case, the flush_cache callback
             course.update_columns(data)
