@@ -53,6 +53,37 @@ class DeAnzaScraper
       course
     end
 
+    def get_courses_status(quarter)
+      courses = Array.new
+
+      department_list.each do |department|
+        html = get_parsed_html course_list_url(department, quarter)
+        table_rows = html.css(".table-schedule tbody tr.mix")
+
+        # there might be some case where nothing is found
+        next if table_rows.empty?
+
+        current_row = 0
+        while current_row < table_rows.count
+          tds = table_rows[current_row].css('td')
+
+          course = {
+            crn: tds[0].text,
+            status: tds[3].text,
+          }
+
+          course[:status] = 'Waitlist' if course[:status] == 'WL'
+
+          courses.push course
+
+          current_row += numberOfExtraLectures(table_rows[current_row])
+          current_row += 1
+        end
+      end
+
+      courses
+    end
+
     private
     def department_list
       html = get_parsed_html 'https://www.deanza.edu/schedule/'
@@ -132,7 +163,7 @@ class DeAnzaScraper
 
     def numberOfExtraLectures(row)
       rowspan = row.css('td').first.attr('rowspan').to_i
-      rowspan == nil ? 0 : rowspan - 1
+      rowspan == 0 ? 0 : rowspan - 1
     end
 
     def extract_lecture_data(row)
