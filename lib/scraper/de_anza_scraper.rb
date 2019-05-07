@@ -7,10 +7,6 @@ class DeAnzaScraper
     update_course_with_scraper('Updating database') do
       DeAnzaScraper::NewWebsiteScraper.new.scrape(quarter)
     end
-
-    # get course data from myportal
-    course_data = DeAnzaScraper::NewWebsiteScraper.new.get_courses_status(quarter)
-    self.update_database(course_data)
   end
 
   def self.update_myportal_data

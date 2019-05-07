@@ -189,13 +189,13 @@ class DeAnzaScraper
         course = {
           crn:        tds[0].text,
           course:     tds[1].text,
+          status:     tds[3].text,
           department: department,
           quarter: quarter,
           description: '',
           class_material: '',
           prerequisites_note: '',
           prerequisites_advisory: '',
-          # section:  tds[2].text,
 
           'lectures_attributes' => [{
             title:      tds[4].children.first.text,
@@ -205,6 +205,8 @@ class DeAnzaScraper
             location:   tds[8].text
           }]
         }
+
+        course[:status] = 'Waitlist' if course[:status] == 'WL'
 
         # if it has more than one lectures
         # get lecture data from the next n rows
