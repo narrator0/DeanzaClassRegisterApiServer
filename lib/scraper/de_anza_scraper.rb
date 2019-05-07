@@ -9,7 +9,7 @@ class DeAnzaScraper
     end
   end
 
-  def self.update_myportal_data
+  def self.update_status
     if Course.where(quarter: quarter).any?
       course_data = DeAnzaScraper::NewWebsiteScraper.new.get_courses_status(quarter)
       self.update_database(course_data)

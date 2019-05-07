@@ -2,12 +2,12 @@ require 'rails_helper'
 require_relative '../../lib/scraper/de_anza_scraper'
 
 RSpec.describe DeAnzaScraper do
-  describe '#update_myportal_data' do
+  describe '#get_course_status' do
     it 'should run without error' do
       create(:course)
 
       expect {
-        DeAnzaScraper.update_myportal_data
+        DeAnzaScraper::NewWebsiteScraper.new.get_courses_status(Rails.application.credentials.quarter)
       }.to_not raise_error
     end
   end
