@@ -76,6 +76,7 @@ class DeAnzaScraper
 
           courses.push course
 
+          # skip through class with more than one lectures
           current_row += numberOfExtraLectures(table_rows[current_row])
           current_row += 1
         end
